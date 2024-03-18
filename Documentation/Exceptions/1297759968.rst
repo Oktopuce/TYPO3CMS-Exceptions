@@ -6,6 +6,12 @@ TYPO3 Exception 1297759968
 
 .. include:: /If-you-encounter-this-exception.rst.txt
 
+
+Exception while property mapping at property path "": Type of child property "myproperty" of class "Vendor\MyExt\Domain\Model\Dto\MyDto" could not be derived from constructor arguments as said class does not have a constructor defined.
+=================================================================================================================================================================================================================================================
+
+This exception happens because in the DTO, the setter doesn't have the right name, check the setter name for the property "myproperty" it must be "setMyproperty". With PHP V7, it could also be "setMyProperty" but that doesn't work anymore with PHP V8.
+
 Exception while property mapping at property path "":Object with identity "1" not found.
 ========================================================================================
 
