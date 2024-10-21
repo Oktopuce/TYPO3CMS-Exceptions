@@ -1,0 +1,41 @@
+.. include:: /Includes.rst.txt
+
+====================
+TYPO3 Exception 1055
+====================
+
+.. include:: /If-you-encounter-this-exception.rst.txt
+
+Exception in case ONLY_FULL_GROUP_BY is disrespected
+====================================================
+
+Exception message::
+
+   #1055 Doctrine\DBAL\Exception\DriverException
+   An exception occurred while executing a query: Expression #6 of SELECT list is not in GROUP BY clause and 
+   contains nonaggregated column 'uccife.sys_category_record_mm.sorting' which is not functionally dependent 
+   on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+
+You are getting this exception because you are trying to execute a query with a GROUP BY clause that does not contain all selected fields and :sql:`sql_mode=only_full_group_by`
+
+Sample
+------
+This query will cause the exception::
+  
+  $statement = $queryBuilder->count('*')
+    ->addSelect('uid_local', 'uid_foreign', 'tablenames', 'fieldname', 'sorting', 'sorting_foreign')
+    ->from('sys_category_record_mm')
+    ->groupBy('uid_local', 'uid_foreign', 'tablenames', 'fieldname')
+    ->having('COUNT(*) > 1')
+    ->executeQuery();
+
+Solution
+=========
+Add the missing fields to GROUP BY clause::
+  
+  $statement = $queryBuilder->count('*')
+    ->addSelect('uid_local', 'uid_foreign', 'tablenames', 'fieldname', 'sorting', 'sorting_foreign')
+    ->from('sys_category_record_mm')
+    ->groupBy('uid_local', 'uid_foreign', 'tablenames', 'fieldname', 'sorting', 'sorting_foreign')
+    ->having('COUNT(*) > 1')
+    ->executeQuery();
