@@ -9,6 +9,40 @@ TYPO3 Exception 1253175643
 The argument type for parameter $parameter of method ... could not be detected.
 ===============================================================================
 
+    (1/1) #1253175643 TYPO3\\CMS\\Extbase\\Mvc\\Exception\\InvalidArgumentTypeException
+
+    The argument type for parameter $parameter of method Vendor\\Extension\\Controller\\MyController->myAction() could not be detected.
+
+This happen if the argument type is missing in method signature or PHPDoc comment.
+
+Replace code like this:
+
+::
+
+    public function myMethodAction(
+        $parameter,
+    ): \Psr\Http\Message\ResponseInterface {
+      ...
+    }
+    
+with :
+
+::
+
+    /**
+     * @param string $parameter
+     */
+    public function myMethodAction(
+        string $parameter,
+    ): \Psr\Http\Message\ResponseInterface {
+      ...
+    }
+    
+Don't forget to clear all caches.
+
+The argument type for parameter $parameter of method ... could not be detected (Old TYPO3 version).
+===================================================================================================
+
    1253175643: The argument type for parameter $parameter of method
    Tx_yourExtensionKey_Controller_yourController->yourAction() could not
    be detected.
